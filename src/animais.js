@@ -51,6 +51,60 @@ class Animais {
 
     return animal;
   }
+
+  static incluirAnimal(animal) {
+    if (typeof animal !== "object") {
+      return { erro: "Tipo de parâmetro inválido" };
+    }
+
+    if (!Animais.validarAnimal(animal)) {
+      return { erro: "Propriedade(s) do animal inválida(s)" };
+    }
+
+    const animalASerIncluso = {
+      especie: animal.especie.toUpperCase(),
+      tamanho: animal.tamanho,
+      biomas: animal.biomas.map((bioma) => bioma.toLowerCase()),
+      alimentacao: animal.alimentacao.toLowerCase(),
+    };
+
+    this.animais.push(animalASerIncluso);
+    return { animalIncluido: animalASerIncluso };
+  }
+
+  static validarAnimal(animal) {
+    return (
+      typeof animal.especie === "string" &&
+      animal.especie.length > 1 &&
+      typeof animal.tamanho === "number" &&
+      animal.tamanho > 0 &&
+      Array.isArray(animal.biomas) &&
+      animal.biomas.length > 0 &&
+      animal.biomas.every(
+        (bioma) =>
+          typeof bioma === "string" && this.biomas.includes(bioma.toLowerCase())
+      ) &&
+      typeof animal.alimentacao === "string" &&
+      this.alimentacao.includes(animal.alimentacao.toLowerCase())
+    );
+  }
 }
 
 export { Animais as Animais };
+
+const animalValido = {
+  especie: "elefante",
+  tamanho: 5,
+  biomas: ["Savana", "Floresta"],
+  alimentacao: "Herbivoro",
+};
+
+const animalInvalido = {
+  especie: "",
+  tamanho: 5,
+  biomas: ["savana"],
+  alimentacao: "herbivoro",
+};
+
+console.log(Animais.incluirAnimal(animalInvalido));
+console.log(Animais.incluirAnimal(animalValido));

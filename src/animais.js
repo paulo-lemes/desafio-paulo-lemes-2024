@@ -39,6 +39,18 @@ class Animais {
       alimentacao: "herbivoro",
     },
   ];
+
+  static obterAnimal(especie) {
+    if (typeof especie !== "string" || especie.length < 2) {
+      return { erro: "Parâmetro inválido" };
+    }
+
+    const animal = this.animais.filter(
+      (animal) => animal.especie === especie
+    )[0];
+
+    return animal;
+  }
 }
 
 export { Animais as Animais };

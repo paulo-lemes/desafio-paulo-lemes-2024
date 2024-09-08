@@ -68,6 +68,8 @@ class RecintosZoo extends Animais {
       this.erro = "Não há recinto viável";
       return { erro: this.erro };
     }
+
+    this.#obterTamanhoRestanteRecinto(recintos[0], animal, quantidade);
   }
 
   #obterRecintoPorTipo(animal, quantidade) {
@@ -114,6 +116,47 @@ class RecintosZoo extends Animais {
     recinto.forEach((recinto) => console.log(recinto));
 
     return recinto;
+  }
+
+  #obterTamanhoRestanteRecinto(recinto, animal, quantidade) {
+    let tamanhoRestante;
+
+    console.log(`Recinto ${recinto.numero}: ${recinto.biomas}`);
+    console.log(` > Tamanho total: ${recinto.tamanhoTotal}`);
+
+    const tamanhoAnimalASerColocado = quantidade * animal.tamanho;
+    console.log(` > Tamanho a ser ocupado: ${tamanhoAnimalASerColocado}`);
+
+    if (recinto.animaisExistentes.length > 0) {
+      const tamanhoOcupado = recinto.animaisExistentes.reduce((acc, animal) => {
+        const infosAnimal = RecintosZoo.obterAnimal(animal.especie);
+        return acc + animal.quantidade * infosAnimal.tamanho;
+      }, 0);
+      console.log(` > Tamanho ocupado: ${tamanhoOcupado}`);
+
+      const recintoTemOutraEspecie = recinto.animaisExistentes.some(
+        ({ especie }) => especie !== animal.especie
+      );
+      const tamanhoAdicional = recintoTemOutraEspecie ? 1 : 0;
+      console.log(
+        ` > Recinto tem outra espécie: ${
+          recintoTemOutraEspecie ? "Sim (+1 espaço)" : "Não"
+        }`
+      );
+
+      tamanhoRestante =
+        recinto.tamanhoTotal -
+        tamanhoOcupado -
+        tamanhoAdicional -
+        tamanhoAnimalASerColocado;
+      console.log(` > Tamanho restante: ${tamanhoRestante}`);
+
+      return tamanhoRestante;
+    }
+
+    tamanhoRestante = recinto.tamanhoTotal - tamanhoAnimalASerColocado;
+    console.log(` > Tamanho restante: ${tamanhoRestante}`);
+    return tamanhoRestante;
   }
 }
 

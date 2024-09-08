@@ -38,7 +38,32 @@ class RecintosZoo extends Animais {
     }
   }
 
-  analisaRecintos(animal, quantidade) {}
+  analisaRecintos(especie, quantidade) {
+    if (
+      typeof especie !== "string" ||
+      especie.length < 2 ||
+      typeof quantidade !== "number"
+    ) {
+      this.erro = "Parâmetro(s) inválido(s)";
+      return { erro: this.erro };
+    }
+
+    const nomeDaEspecieEmMaiusculo = especie.toUpperCase();
+    const animal = RecintosZoo.obterAnimal(nomeDaEspecieEmMaiusculo);
+    console.log(`Animal obtido:`, animal);
+
+    if (!animal) {
+      this.erro = "Animal inválido";
+      return { erro: this.erro };
+    }
+
+    if (quantidade <= 0) {
+      this.erro = "Quantidade inválida";
+      return { erro: this.erro };
+    }
+  }
 }
 
 export { RecintosZoo as RecintosZoo };
+
+const resultado = new RecintosZoo().analisaRecintos("Leao", 1);

@@ -69,7 +69,19 @@ class RecintosZoo extends Animais {
       return { erro: this.erro };
     }
 
-    this.#obterTamanhoRestanteRecinto(recintos[0], animal, quantidade);
+    const recintosViaveis = this.#obterRecintosViaveis(
+      recintos,
+      animal,
+      quantidade
+    );
+
+    if (recintosViaveis.length === 0) {
+      this.erro = "Não há recinto viável";
+      return { erro: this.erro };
+    }
+
+    this.recintosViaveis = recintosViaveis;
+    return { recintosViaveis };
   }
 
   #obterRecintoPorTipo(animal, quantidade) {
@@ -158,8 +170,32 @@ class RecintosZoo extends Animais {
     console.log(` > Tamanho restante: ${tamanhoRestante}`);
     return tamanhoRestante;
   }
+
+  #obterRecintosViaveis(recintos, animal, quantidade) {
+    const recintosViaveis = recintos.reduce((arr, recinto) => {
+      const tamanhoRestante = this.#obterTamanhoRestanteRecinto(
+        recinto,
+        animal,
+        quantidade
+      );
+      if (tamanhoRestante >= 0) {
+        arr.push(
+          `Recinto ${recinto.numero} (espaço livre: ${tamanhoRestante} total: ${recinto.tamanhoTotal})`
+        );
+      }
+      return arr;
+    }, []);
+
+    return recintosViaveis;
+  }
 }
 
 export { RecintosZoo as RecintosZoo };
 
-const resultado = new RecintosZoo().analisaRecintos("Leao", 1);
+const resultado = new RecintosZoo();
+// console.log(resultado.analisaRecintos("Leao", 1));
+// console.log(resultado.analisaRecintos("CROCODILO", 1));
+// console.log(resultado.analisaRecintos("ELEFANTE", 1));
+console.log(resultado.analisaRecintos("HIPOPOTAMO", 1));
+// console.clear();
+// console.log(resultado.analisaRecintos("MACACO", 2));

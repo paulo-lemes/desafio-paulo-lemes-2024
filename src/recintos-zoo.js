@@ -61,6 +61,59 @@ class RecintosZoo extends Animais {
       this.erro = "Quantidade inválida";
       return { erro: this.erro };
     }
+
+    const recintos = this.#obterRecintoPorTipo(animal, quantidade);
+
+    if (recintos.length === 0) {
+      this.erro = "Não há recinto viável";
+      return { erro: this.erro };
+    }
+  }
+
+  #obterRecintoPorTipo(animal, quantidade) {
+    const recinto = this.recintosExistentes.filter((recinto) => {
+      const filtroBioma = recinto.biomas.some((bioma) =>
+        animal.biomas.includes(bioma)
+      );
+
+      const filtroAlimentacao =
+        animal.alimentacao === "carnivoro"
+          ? recinto.animaisExistentes.some(
+              ({ especie }) => especie === animal.especie
+            ) || recinto.animaisExistentes.length === 0
+          : recinto.animaisExistentes.some(({ especie }) => {
+              const infosAnimal = RecintosZoo.obterAnimal(especie);
+              return infosAnimal.alimentacao !== "carnivoro";
+            }) || recinto.animaisExistentes.length === 0;
+
+      const filtroMacaco =
+        animal.especie === "MACACO" && quantidade < 2
+          ? recinto.animaisExistentes.length !== 0
+          : true;
+
+      const possuiHipopotamo = recinto.animaisExistentes.some(
+        ({ especie }) => especie === "HIPOPOTAMO"
+      );
+
+      const filtroHipopotamo =
+        animal.especie === "HIPOPOTAMO"
+          ? !recinto.animaisExistentes.some(
+              ({ especie }) => especie !== "HIPOPOTAMO"
+            ) ||
+            (recinto.biomas.includes("savana") &&
+              recinto.biomas.includes("rio"))
+          : !possuiHipopotamo ||
+            (recinto.biomas.includes("savana") &&
+              recinto.biomas.includes("rio"));
+
+      return (
+        filtroBioma && filtroAlimentacao && filtroMacaco && filtroHipopotamo
+      );
+    });
+    console.log(`Recinto(s) obtido(s):`);
+    recinto.forEach((recinto) => console.log(recinto));
+
+    return recinto;
   }
 }
 

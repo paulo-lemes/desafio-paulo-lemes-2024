@@ -60,7 +60,7 @@ class RecintosZoo extends Recintos {
 
     if (
       numeroRecinto !== undefined &&
-      (numeroRecinto < 0 ||
+      (numeroRecinto <= 0 ||
         numeroRecinto >
           this.recintosExistentes[this.recintosExistentes.length - 1].numero)
     ) {

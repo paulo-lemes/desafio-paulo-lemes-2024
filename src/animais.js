@@ -88,6 +88,20 @@ class Animais {
       this.alimentacao.includes(animal.alimentacao.toLowerCase())
     );
   }
+
+  static incluirBioma(bioma) {
+    if (typeof bioma !== "string" || bioma.length < 2) {
+      return { erro: "Bioma inválido" };
+    }
+    this.biomas.push(bioma.toLowerCase());
+  }
+
+  static incluirTipoAlimentacao(alimentacao) {
+    if (typeof alimentacao !== "string" || alimentacao.length < 2) {
+      return { erro: "Tipo de alimentação inválido" };
+    }
+    this.alimentacao.push(alimentacao.toLowerCase());
+  }
 }
 
 export { Animais as Animais };

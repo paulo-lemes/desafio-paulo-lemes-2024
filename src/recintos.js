@@ -194,9 +194,10 @@ class Recintos extends Animais {
         quantidade
       );
       if (tamanhoRestante >= 0) {
-        arr.push(
-          `Recinto ${recinto.numero} (espaço livre: ${tamanhoRestante} total: ${recinto.tamanhoTotal})`
-        );
+        arr.push({
+          recinto,
+          info: `Recinto ${recinto.numero} (espaço livre: ${tamanhoRestante} total: ${recinto.tamanhoTotal})`,
+        });
       }
       return arr;
     }, []);

@@ -31,10 +31,68 @@ class Recintos extends Animais {
         animaisExistentes: [{ especie: "LEAO", quantidade: 1 }],
       },
     ];
-    if (recintos) {
+    if (this.validarRecintos(recintos)) {
       this.recintosExistentes.push(...recintos);
       console.log("Recinto(s) adicionado(s) com sucesso");
     }
+  }
+
+  validarRecintos(recintos) {
+    if (recintos === undefined) return false;
+
+    if (!Array.isArray(recintos)) {
+      console.log("Parâmetro de entrada precisa ser um array");
+      return false;
+    }
+
+    const erros = [];
+
+    for (const recinto of recintos) {
+      if (
+        typeof recinto.numero !== "number" ||
+        recinto.numero !==
+          this.recintosExistentes[this.recintosExistentes.length - 1].numero + 1
+      )
+        erros.push("'numero' inválido");
+
+      if (
+        !Array.isArray(recinto.biomas) ||
+        recinto.biomas.length === 0 ||
+        !recinto.biomas.every(
+          (bioma) => typeof bioma === "string" && Animais.biomas.includes(bioma)
+        )
+      )
+        erros.push("'biomas' inválido(s)");
+
+      if (typeof recinto.tamanhoTotal !== "number" || recinto.tamanhoTotal <= 0)
+        erros.push("'tamanhoTotal' inválido");
+
+      if (!Array.isArray(recinto.animaisExistentes))
+        erros.push("'animaisExistentes' deve ser um array");
+
+      if (
+        Array.isArray(recinto.animaisExistentes) &&
+        recinto.animaisExistentes.length !== 0
+      ) {
+        for (const animal of recinto.animaisExistentes) {
+          if (
+            typeof animal.especie !== "string" ||
+            !Animais.animais.some(({ especie }) => especie === animal.especie)
+          )
+            erros.push("'especie' inválida");
+
+          if (typeof animal.quantidade !== "number" || animal.quantidade <= 0)
+            erros.push("'quantidade' inválida");
+        }
+      }
+    }
+
+    if (erros.length > 0) {
+      console.log("Recinto não adicionado - Propriedade(s) inválida(s):");
+      console.log(erros);
+      return false;
+    }
+    return true;
   }
 
   obterRecintoPorTipo(animal, quantidade) {

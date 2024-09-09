@@ -31,10 +31,7 @@ class Recintos extends Animais {
         animaisExistentes: [{ especie: "LEAO", quantidade: 1 }],
       },
     ];
-    if (this.validarRecintos(recintos)) {
-      this.recintosExistentes.push(...recintos);
-      console.log("Recinto(s) adicionado(s) com sucesso");
-    }
+    this.incluirRecintos(recintos);
   }
 
   validarRecintos(recintos) {
@@ -93,6 +90,13 @@ class Recintos extends Animais {
       return false;
     }
     return true;
+  }
+
+  incluirRecintos(recintos) {
+    if (this.validarRecintos(recintos)) {
+      this.recintosExistentes.push(...recintos);
+      console.log("Recinto(s) adicionado(s) com sucesso");
+    }
   }
 
   obterRecintoPorTipo(animal, quantidade) {

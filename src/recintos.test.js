@@ -8,6 +8,14 @@ describe("Classe Recintos", () => {
     animaisExistentes: [{ especie: "HIPOPOTAMO", quantidade: 1 }],
   };
 
+  test("Deve adicionar recinto", () => {
+    const resultado = new Recintos([recintoTeste]);
+    expect(
+      resultado.recintosExistentes[resultado.recintosExistentes.length - 1]
+        .numero
+    ).toBe(6);
+  });
+
   test("Não deve adicionar recinto com número inválido", () => {
     const resultado = new Recintos([{ ...recintoTeste, numero: 1 }]);
     expect(

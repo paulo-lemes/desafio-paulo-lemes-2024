@@ -120,5 +120,5 @@ const animalInvalido = {
   alimentacao: "herbivoro",
 };
 
-console.log(Animais.incluirAnimal(animalInvalido));
-console.log(Animais.incluirAnimal(animalValido));
+Animais.incluirAnimal(animalInvalido);
+Animais.incluirAnimal(animalValido);

@@ -103,7 +103,66 @@ class RecintosZoo extends Recintos {
 
     this.recintosExistentes = recintosAtualizados;
     return {
-      sucesso: `${quantidade} ${animal.especie}(s) adicionado(s) ao recinto ${numeroRecinto}`,
+      sucesso: `${animal.especie} - ${quantidade} adicionado(s) ao recinto ${numeroRecinto}`,
+      recintoAtualizado: this.recintosExistentes[numeroRecinto - 1],
+    };
+  }
+
+  removerAnimalDeRecinto(especie, quantidade, numeroRecinto) {
+    const animal = this.validarParametrosEntrada(
+      especie,
+      quantidade,
+      numeroRecinto
+    );
+
+    if (!animal) return { erro: this.erro };
+
+    this.erro = "";
+
+    const recintosAtualizados = this.recintosExistentes.map((recinto) => {
+      if (recinto.numero !== numeroRecinto) return recinto;
+
+      const indexAnimal = recinto.animaisExistentes.findIndex(
+        ({ especie }) => especie === animal.especie
+      );
+
+      if (
+        indexAnimal === -1 ||
+        recinto.animaisExistentes[indexAnimal].quantidade < quantidade
+      ) {
+        this.erro = `Não há ${especie} suficiente no recinto ${numeroRecinto}`;
+        return recinto;
+      }
+
+      const recintoAtualizado = { ...recinto };
+      const animaisAtualizados = [...recinto.animaisExistentes];
+
+      const quantidadeAnimal = animaisAtualizados[indexAnimal].quantidade;
+
+      if (quantidadeAnimal > quantidade) {
+        animaisAtualizados[indexAnimal] = {
+          ...animaisAtualizados[indexAnimal],
+          quantidade: quantidadeAnimal - quantidade,
+        };
+      } else {
+        animaisAtualizados.splice(indexAnimal, 1);
+      }
+
+      recintoAtualizado.animaisExistentes = animaisAtualizados;
+      return recintoAtualizado;
+    });
+
+    if (this.erro) {
+      return {
+        erro: this.erro,
+        recinto: this.recintosExistentes[numeroRecinto - 1],
+      };
+    }
+
+    this.recintosExistentes = recintosAtualizados;
+    return {
+      sucesso: `${animal.especie} - ${quantidade} removido(s) do recinto ${numeroRecinto}`,
+      recintoAtualizado: this.recintosExistentes[numeroRecinto - 1],
     };
   }
 }
@@ -114,8 +173,10 @@ const resultado = new RecintosZoo();
 // console.log(resultado.analisaRecintos("Leao", 1));
 // console.log(resultado.analisaRecintos("CROCODILO", 1));
 // console.log(resultado.analisaRecintos("ELEFANTE", 1));
-console.log(resultado.analisaRecintos("HIPOPOTAMO", 1));
-console.log(resultado.adicionarAnimalEmRecinto("HIPOPOTAMO", 1, 4));
-console.log(resultado.recintosExistentes[3]);
+// console.log(resultado.analisaRecintos("HIPOPOTAMO", 1));
+// console.log(resultado.adicionarAnimalEmRecinto("HIPOPOTAMO", 1, 4));
+// console.log(resultado.recintosExistentes[3]);
+// console.log(resultado.removerAnimalDeRecinto("macaco", 1, 1));
+console.log(resultado.removerAnimalDeRecinto("leao", 1, 5));
 // console.clear();
 // console.log(resultado.analisaRecintos("MACACO", 2));

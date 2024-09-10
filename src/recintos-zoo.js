@@ -92,13 +92,30 @@ class RecintosZoo extends Recintos {
     }
 
     const recintosAtualizados = this.recintosExistentes.map((recinto) => {
-      if (recinto.numero === numeroRecinto) {
-        recinto.animaisExistentes.push({
+      if (recinto.numero !== numeroRecinto) return recinto;
+
+      const indexAnimal = recinto.animaisExistentes.findIndex(
+        ({ especie }) => especie === animal.especie
+      );
+
+      const recintoAtualizado = { ...recinto };
+      const animaisAtualizados = [...recinto.animaisExistentes];
+
+      if (indexAnimal === -1) {
+        animaisAtualizados.push({
           especie: animal.especie,
           quantidade,
         });
+      } else {
+        const quantidadeAnimal = animaisAtualizados[indexAnimal].quantidade;
+        animaisAtualizados[indexAnimal] = {
+          ...animaisAtualizados[indexAnimal],
+          quantidade: quantidadeAnimal + quantidade,
+        };
       }
-      return recinto;
+
+      recintoAtualizado.animaisExistentes = animaisAtualizados;
+      return recintoAtualizado;
     });
 
     this.recintosExistentes = recintosAtualizados;
@@ -175,8 +192,9 @@ const resultado = new RecintosZoo();
 // console.log(resultado.analisaRecintos("ELEFANTE", 1));
 // console.log(resultado.analisaRecintos("HIPOPOTAMO", 1));
 // console.log(resultado.adicionarAnimalEmRecinto("HIPOPOTAMO", 1, 4));
+console.log(resultado.adicionarAnimalEmRecinto("macaco", 3, 1));
 // console.log(resultado.recintosExistentes[3]);
 // console.log(resultado.removerAnimalDeRecinto("macaco", 1, 1));
-console.log(resultado.removerAnimalDeRecinto("leao", 1, 5));
+// console.log(resultado.removerAnimalDeRecinto("leao", 1, 5));
 // console.clear();
 // console.log(resultado.analisaRecintos("MACACO", 2));

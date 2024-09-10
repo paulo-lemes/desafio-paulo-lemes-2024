@@ -53,6 +53,8 @@ Para realizar o comando de testes, execute:
    npm test
    ```
 
+<div id="header" align="center">
+ 
  
 #### Projeto realizado por Paulo Lemes
 <br/>

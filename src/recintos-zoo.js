@@ -185,16 +185,3 @@ class RecintosZoo extends Recintos {
 }
 
 export { RecintosZoo as RecintosZoo };
-
-const resultado = new RecintosZoo();
-// console.log(resultado.analisaRecintos("Leao", 1));
-// console.log(resultado.analisaRecintos("CROCODILO", 1));
-// console.log(resultado.analisaRecintos("ELEFANTE", 1));
-// console.log(resultado.analisaRecintos("HIPOPOTAMO", 1));
-// console.log(resultado.adicionarAnimalEmRecinto("HIPOPOTAMO", 1, 4));
-console.log(resultado.adicionarAnimalEmRecinto("macaco", 3, 1));
-// console.log(resultado.recintosExistentes[3]);
-// console.log(resultado.removerAnimalDeRecinto("macaco", 1, 1));
-// console.log(resultado.removerAnimalDeRecinto("leao", 1, 5));
-// console.clear();
-// console.log(resultado.analisaRecintos("MACACO", 2));

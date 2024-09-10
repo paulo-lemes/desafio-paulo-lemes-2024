@@ -142,6 +142,8 @@ describe("Recintos do Zoologico", () => {
     expect(resultado.recintosViaveis.length).toBe(1);
   });
 
+  //Testes adicionarAnimalEmRecinto()
+
   test("Deve rejeitar número de recinto inválido para adicionar animal", () => {
     const resultado = new RecintosZoo();
     resultado.adicionarAnimalEmRecinto("hipopotamo", 1, 0);
@@ -154,5 +156,35 @@ describe("Recintos do Zoologico", () => {
     const resultado = new RecintosZoo();
     resultado.adicionarAnimalEmRecinto("hipopotamo", 1, 1);
     expect(resultado.erro).toBe("Recinto 1 não é viável");
+  });
+
+  test("Deve adicionar animal em recinto viável", () => {
+    const zoo = new RecintosZoo();
+    const resultado = zoo.adicionarAnimalEmRecinto("macaco", 3, 1);
+    expect(zoo.erro).toBeFalsy();
+    expect(resultado.sucesso).toBe("MACACO - 3 adicionado(s) ao recinto 1");
+  });
+
+  //Testes removerAnimalDeRecinto()
+
+  test("Deve rejeitar número de recinto inválido para remover animal", () => {
+    const resultado = new RecintosZoo();
+    resultado.removerAnimalDeRecinto("hipopotamo", 1, 0);
+    expect(resultado.erro).toBe("Número do recinto inválido");
+    resultado.removerAnimalDeRecinto("hipopotamo", 1, 7);
+    expect(resultado.erro).toBe("Número do recinto inválido");
+  });
+
+  test("Deve remover animal de recinto", () => {
+    const zoo = new RecintosZoo();
+    const resultado = zoo.removerAnimalDeRecinto("macaco", 2, 1);
+    expect(zoo.erro).toBeFalsy();
+    expect(resultado.sucesso).toBe("MACACO - 2 removido(s) do recinto 1");
+  });
+
+  test("Não deve remover animal inexistente em recinto", () => {
+    const resultado = new RecintosZoo();
+    resultado.removerAnimalDeRecinto("macaco", 3, 2);
+    expect(resultado.erro).toBe("Não há macaco suficiente no recinto 2");
   });
 });
